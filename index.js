@@ -1,22 +1,25 @@
-const express=require("express")
-const { connection } = require("./db")
-const { UserRouter } = require("./Routes/user.route")
-
-
+const express=require('express')
 const app=express()
-
+const {connection}=require("./db")
+require("dotenv").config()
 const cors=require('cors')
 app.use(cors())
 
 app.use(express.json())
-app.use("/users",UserRouter)
+ const {UserRouter}=require("./Routes/user.route")
 
-app.listen(8080,async()=>{
-    try {
+ app.use("/users",UserRouter)
+
+
+
+
+app.listen(process.env.port,async()=>{
+    try{
         await connection
-        console.log("Connected to db");
-        console.log("running at port 8080");
-    } catch (error) {
-        console.log("something went wromg");
+        console.log(`running at port ${process.env.port} `)
+    }catch(err){
+        console.log(err)
+        console.log("something went wrong")
     }
+
 })
